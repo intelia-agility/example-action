@@ -11,8 +11,7 @@
   License for the specific language governing permissions and limitations under
   the License.
   -->
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <name>Example Action Plugin</name>
   <groupId>org.example.plugin</groupId>
@@ -59,7 +58,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <cdap.version>6.0.0-SNAPSHOT</cdap.version>
+    <cdap.version>6.0.0</cdap.version>
     <commons-lang.version>2.6</commons-lang.version>
     <guava.version>19.0</guava.version>
     <redshift-jdbc.version>1.2.1.1001</redshift-jdbc.version>
@@ -121,119 +120,121 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.14.1</version>
-        <configuration>
-          <argLine>-Xmx3g -Djava.awt.headless=true -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.14.1</version>
+          <configuration>
+            <argLine>-Xmx3g -Djava.awt.headless=true -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC
             -Djava.net.preferIPv4Stack=true
           </argLine>
-          <redirectTestOutputToFile>${surefire.redirectTestOutputToFile}</redirectTestOutputToFile>
-          <reuseForks>false</reuseForks>
-          <reportFormat>plain</reportFormat>
-          <systemPropertyVariables>
-            <java.io.tmpdir>${project.build.directory}</java.io.tmpdir>
-          </systemPropertyVariables>
-          <includes>
-            <include>**/*TestsSuite.java</include>
-            <include>**/*TestSuite.java</include>
-            <include>**/Test*.java</include>
-            <include>**/*Test.java</include>
-            <include>**/*TestCase.java</include>
-          </includes>
-          <excludes>
-            <exclude>**/*TestRun.java</exclude>
-          </excludes>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.surefire</groupId>
-            <artifactId>surefire-junit47</artifactId>
-            <version>2.14</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.rat</groupId>
-        <artifactId>apache-rat-plugin</artifactId>
-        <version>0.10</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.doxia</groupId>
-            <artifactId>doxia-core</artifactId>
-            <version>1.6</version>
-            <exclusions>
-              <exclusion>
-                <groupId>xerces</groupId>
-                <artifactId>xercesImpl</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <id>rat-check</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <configuration>
-              <excludes>
-                <exclude>LICENSE*.txt</exclude>
-                <!-- This file should be not be there, but I am excluding it for now -->
-                <exclude>*.rst</exclude>
-                <exclude>*.md</exclude>
-                <exclude>**/*.cdap</exclude>
-                <exclude>**/*.yaml</exclude>
-                <exclude>**/*.md</exclude>
-                <exclude>logs/**</exclude>
-                <exclude>.git/**</exclude>
-                <exclude>.idea/**</exclude>
-                <exclude>**/grok/patterns/**</exclude>
-                <exclude>conf/**</exclude>
-                <exclude>data/**</exclude>
-                <exclude>plugins/**</exclude>
-                <exlcude>**/*.patch</exlcude>
-                <exclude>**/logrotate.d/**</exclude>
-                <exclude>**/limits.d/**</exclude>
-                <exclude>**/*.json</exclude>
-                <exclude>**/*.json.template</exclude>
-                <exclude>**/MANIFEST.MF</exclude>
-                <!-- exclude any hack classes -->
-                <exclude>**/org/apache/hadoop/**</exclude>
-                <!-- exclude resource files-->
-                <exclude>**/resources/**</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.7</version>
-        <executions>
-          <!-- Create the config file for artifact which can be used to deploy the artifact.
+            <redirectTestOutputToFile>${surefire.redirectTestOutputToFile}</redirectTestOutputToFile>
+            <reuseForks>false</reuseForks>
+            <reportFormat>plain</reportFormat>
+            <systemPropertyVariables>
+              <java.io.tmpdir>${project.build.directory}</java.io.tmpdir>
+            </systemPropertyVariables>
+            <includes>
+              <include>**/*TestsSuite.java</include>
+              <include>**/*TestSuite.java</include>
+              <include>**/Test*.java</include>
+              <include>**/*Test.java</include>
+              <include>**/*TestCase.java</include>
+            </includes>
+            <excludes>
+              <exclude>**/*TestRun.java</exclude>
+            </excludes>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.surefire</groupId>
+              <artifactId>surefire-junit47</artifactId>
+              <version>2.14</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <version>0.10</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.doxia</groupId>
+              <artifactId>doxia-core</artifactId>
+              <version>1.6</version>
+              <exclusions>
+                <exclusion>
+                  <groupId>xerces</groupId>
+                  <artifactId>xercesImpl</artifactId>
+                </exclusion>
+              </exclusions>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <id>rat-check</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <configuration>
+                <excludes>
+                  <exclude>LICENSE*.txt</exclude>
+                  <!-- This file should be not be there, but I am excluding it for now -->
+                  <exclude>*.rst</exclude>
+                  <exclude>*.md</exclude>
+                  <exclude>**/*.cdap</exclude>
+                  <exclude>**/*.yaml</exclude>
+                  <exclude>**/*.md</exclude>
+                  <exclude>logs/**</exclude>
+                  <exclude>.git/**</exclude>
+                  <exclude>.idea/**</exclude>
+                  <exclude>**/grok/patterns/**</exclude>
+                  <exclude>conf/**</exclude>
+                  <exclude>data/**</exclude>
+                  <exclude>plugins/**</exclude>
+                  <exlcude>**/*.patch</exlcude>
+                  <exclude>**/logrotate.d/**</exclude>
+                  <exclude>**/limits.d/**</exclude>
+                  <exclude>**/*.json</exclude>
+                  <exclude>**/*.json.template</exclude>
+                  <exclude>**/MANIFEST.MF</exclude>
+                  <!-- exclude any hack classes -->
+                  <exclude>**/org/apache/hadoop/**</exclude>
+                  <!-- exclude resource files-->
+                  <exclude>**/resources/**</exclude>
+                </excludes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.7</version>
+          <executions>
+            <!-- Create the config file for artifact which can be used to deploy the artifact.
                Sets the parents field to system:cdap-etl-batch and system:cdap-etl-realtime with whatever
                version range is set in the app.parents property.
                also sets a widget and doc property for each file contained in the widgets and docs directories. -->
-          <execution>
-            <id>create-artifact-config</id>
-            <phase>prepare-package</phase>
-            <configuration>
-              <target>
-                <script language="javascript"> <![CDATA[
+            <execution>
+              <id>create-artifact-config</id>
+              <phase>prepare-package</phase>
+              <configuration>
+                <target>
+                  <script language="javascript">
+                    <![CDATA[
                   // for some reason, project.basedir evaluates to null if we just get the property here.
                   // so we set main.basedir to project.basedir in the pom properties, then main.basedir is used here
                   // where it evaluates correctly for whatever reason
@@ -295,38 +296,40 @@
                   var fw = new java.io.BufferedWriter(new java.io.FileWriter(cfgFile.getAbsoluteFile()));
                   fw.write(JSON.stringify(config, null, 2));
                   fw.close();
-                ]]></script>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>2.3.7</version>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <_exportcontents>${exported-packages}</_exportcontents>
-            <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
-            <Embed-Transitive>true</Embed-Transitive>
-            <Embed-Directory>lib</Embed-Directory>
-            <!--Only @Plugin classes in the export packages will be included as plugin-->
-          </instructions>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>bundle</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+                ]]>
+                  </script>
+                </target>
+              </configuration>
+              <goals>
+                <goal>run</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>2.3.7</version>
+          <extensions>true</extensions>
+          <configuration>
+            <instructions>
+              <_exportcontents>${exported-packages}</_exportcontents>
+              <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
+              <Embed-Transitive>true</Embed-Transitive>
+              <Embed-Directory>lib</Embed-Directory>
+              <!--Only @Plugin classes in the export packages will be included as plugin-->
+            </instructions>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>bundle</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>
